@@ -53,7 +53,6 @@ public class SecretKeyFactoryTest {
         assertEquals("Returned KeySpec does not match original KeySpec", ((PBEKeySpec)spec).getIterationCount(), 120000);
         assertArrayEquals("Returned KeySpec does not match original KeySpec", ((PBEKeySpec)spec).getPassword(), password.toCharArray());
         assertArrayEquals("Returned KeySpec does not match original KeySpec", ((PBEKeySpec)spec).getSalt(), salt.getBytes());
-        System.out.println("passed");
     }
 
     public void run() {

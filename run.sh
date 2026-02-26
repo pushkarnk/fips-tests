@@ -7,10 +7,8 @@
 # Test deps
 # junit - apt install junit5
 
-JAVA_HOME=/usr/lib/java-{17,21}-openjdk-{arch}/
-JAVA_FIPS_JRE=/usr/lib/java-{17,21}-openjdk-fips-openssl-{arch}/
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64/
+JAVA_FIPS_JRE=/usr/lib/jvm/java-17-openjdk-fips-openssl-arm64/
 
-$JAVA_HOME/bin/javac *.java
-$JAVA_FIPS_JRE/bin/java Runner
-
-
+$JAVA_HOME/bin/javac -cp /usr/share/java/junit-jupiter-api.jar:/usr/share/java/junit-jupiter-params.jar:/usr/share/java/junit4.jar *.java
+$JAVA_FIPS_JRE/bin/java -cp /usr/share/java/junit-jupiter-api.jar:/usr/share/java/junit-jupiter-params.jar:/usr/share/java/junit4.jar Runner
