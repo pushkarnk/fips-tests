@@ -7,6 +7,8 @@
 # Test deps
 # junit - apt install junit5
 
+sudo apt update && sudo apt install junit5 -y
+
 JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64/
 JAVA_FIPS_JRE=/usr/lib/jvm/java-17-openjdk-fips-openssl-arm64/
 

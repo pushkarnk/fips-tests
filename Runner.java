@@ -6,5 +6,6 @@ public class Runner {
         new MDTest().run();
         new SecretKeyFactoryTest().run();
         new SecureRandomTest().run();
+	new SignatureTest().run();
     }
 }
