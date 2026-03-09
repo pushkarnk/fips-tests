@@ -7,10 +7,17 @@
 # Test deps
 # junit - apt install junit5
 
-sudo apt update && sudo apt install junit5 -y
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
+JAVA_FIPS_JRE=/usr/lib/jvm/java-17-openjdk-fips-openssl-amd64/
 
-JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64/
-JAVA_FIPS_JRE=/usr/lib/jvm/java-17-openjdk-fips-openssl-arm64/
+$JAVA_HOME/bin/javac *.java
 
-$JAVA_HOME/bin/javac -cp /usr/share/java/junit-jupiter-api.jar:/usr/share/java/junit-jupiter-params.jar:/usr/share/java/junit4.jar *.java
-$JAVA_FIPS_JRE/bin/java -cp /usr/share/java/junit-jupiter-api.jar:/usr/share/java/junit-jupiter-params.jar:/usr/share/java/junit4.jar Runner
+$JAVA_FIPS_JRE/bin/java CipherTest
+$JAVA_FIPS_JRE/bin/java MacTest
+$JAVA_FIPS_JRE/bin/java MessageDigestTest
+$JAVA_FIPS_JRE/bin/java KeyAgreementTest
+$JAVA_FIPS_JRE/bin/java KeyFactoryTest
+$JAVA_FIPS_JRE/bin/java KeyPairGeneratorTest
+$JAVA_FIPS_JRE/bin/java KeyStoreTest
+$JAVA_FIPS_JRE/bin/java SecretKeyFactoryTest
+$JAVA_FIPS_JRE/bin/java SecureRandomTest

@@ -1,19 +1,3 @@
-/*
- * Copyright (C) Canonical, Ltd.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
 import javax.crypto.CipherSpi;
 import javax.crypto.Cipher;
 import java.security.Key;
@@ -30,17 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.security.spec.AlgorithmParameterSpec;
 import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-
-import org.junit.Test;
-import org.junit.BeforeClass;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import javax.crypto.spec.PBEKeySpec;            
 
 public class CipherTest {
 
-    String [] paddings = {
+    private static String [] paddings = {
         "NONE",
         "PKCS7" ,
         "PKCS5",
@@ -49,7 +27,7 @@ public class CipherTest {
         "ISO7816_4"
     };
 
-    String [] ciphers = {
+    private static String [] ciphers = {
         "AES128/ECB",
         "AES256/ECB",
         "AES192/ECB",
@@ -72,14 +50,19 @@ public class CipherTest {
         "AES256/GCM"
     };
    
-    public void run() {
-        System.out.print("CipherTest: ");
-        var result = org.junit.runner.JUnitCore.runClasses(CipherTest.class);             
-        System.out.println("Run " + result.getRunCount() + " tests, failed " + result.getFailureCount());
+    public static void main(String[] args) throws Exception {
+        System.out.println("CipherTest: ");
+        testBlockSize();
+        testGetOutputSize();
+        testGetIV();
+        testKeyWrapUnwrap();
+        testSingleUpdate();
+        testMultipleUpdates();
+        testKeyWrapUnwrap();
     }
 
-    @Test
-    public void testSingleUpdate() throws Exception {
+    
+    public static void testSingleUpdate() throws Exception {
         for (String cipher : ciphers) {
             // CCM tests currently fail
             // see https://github.com/openssl/openssl/issues/22773
@@ -92,8 +75,8 @@ public class CipherTest {
         }
     }
 
-    @Test
-    public void testMultipleUpdates() throws Exception {
+    
+    public static void testMultipleUpdates() throws Exception {
         for (String cipher : ciphers) {
             // CCM tests currently fail
             // see https://github.com/openssl/openssl/issues/22773
@@ -106,7 +89,7 @@ public class CipherTest {
         
     }
 
-    private void runTestMultipleUpdates(String nameKeySizeAndMode, String padding) throws Exception {
+    private static void runTestMultipleUpdates(String nameKeySizeAndMode, String padding) throws Exception {
         String cipherName = nameKeySizeAndMode + "/" + padding;
         SecureRandom sr = SecureRandom.getInstance("NativePRNG");
 
@@ -121,7 +104,7 @@ public class CipherTest {
         } else if (keySize.equals("256")) {
             key = new byte[32];
         } else {
-            fail("Key size unsupported");
+            Utils.fail("Key size unsupported");
             return;
         }
 
@@ -167,10 +150,10 @@ public class CipherTest {
 
         byte[] output = decipher.doFinal(fullEnc, 0, encLen);
 
-        assertArrayEquals("Multi-update cipher test for " + cipherName + " failed", fullInput, output); 
+        Utils.assertArrayEquals("Multi-update cipher test for " + cipherName + " failed", fullInput, output); 
     }
 
-    private void runTestSingleUpdate(String nameKeySizeAndMode, String padding) throws Exception {
+    private static void runTestSingleUpdate(String nameKeySizeAndMode, String padding) throws Exception {
         SecureRandom sr = SecureRandom.getInstance("NativePRNG");
         String cipherName = nameKeySizeAndMode + "/" + padding;
         Cipher cipher = Cipher.getInstance(cipherName, "OpenSSLFIPSProvider");
@@ -186,7 +169,7 @@ public class CipherTest {
         } else if (keySize.equals("256")) {
             key = new byte[32];
         } else {
-            fail("Key size unsupported");
+            Utils.fail("Key size unsupported");
             return;
         }
 
@@ -218,10 +201,10 @@ public class CipherTest {
 
         byte[] output = decipher.doFinal(outFinal, 0, outFinal.length);
 
-        assertArrayEquals("Single update cipher test for " + cipherName + " failed",  input, output);
+        Utils.assertArrayEquals("Single update cipher test for " + cipherName + " failed",  input, output);
     }
 
-    private void runTestGetOutputSize(String nameKeySizeAndMode, String padding) throws Exception {
+    private static void runTestGetOutputSize(String nameKeySizeAndMode, String padding) throws Exception {
         String cipherName = nameKeySizeAndMode + "/" + padding;
         SecureRandom sr = SecureRandom.getInstance("NativePRNG");
 
@@ -234,7 +217,7 @@ public class CipherTest {
         } else if (keySize.equals("256")) {
             key = new byte[32];
         } else {
-            fail("Key size unsupported");
+            Utils.fail("Key size unsupported");
             return;
         }
 
@@ -269,16 +252,16 @@ public class CipherTest {
         System.arraycopy(enc2, 0, fullEnc, encLen, enc2.length);
         encLen += enc2.length;
 
-        assertEquals("Encrypted text has an unexpected length for " + cipherName, encLen, cipher.getOutputSize(inputSize*2));
+        Utils.assertIntEquals("Encrypted text has an unexpected length for " + cipherName, encLen, cipher.getOutputSize(inputSize*2));
 
         Cipher decipher = Cipher.getInstance(nameKeySizeAndMode + "/" + padding, "OpenSSLFIPSProvider");
         decipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), spec, sr);
         byte[] output = decipher.doFinal(fullEnc, 0, fullEnc.length);
-        assertArrayEquals("Multi-update cipher test for " + cipherName + " failed", fullInput, output);
+        Utils.assertArrayEquals("Multi-update cipher test for " + cipherName + " failed", fullInput, output);
     }
 
-    @Test
-    public void testBlockSize() throws Exception {
+    
+    public static void testBlockSize() throws Exception {
         for (String cipher : ciphers) {
             for(String padding : paddings) {
                 runTestBlockSize(cipher, padding);
@@ -287,8 +270,8 @@ public class CipherTest {
         
     }
 
-    @Test
-    public void testGetOutputSize() throws Exception {
+    
+    public static void testGetOutputSize() throws Exception {
         for (String cipher : ciphers) {
             if (cipher.endsWith("CCM"))
                 continue;
@@ -300,8 +283,8 @@ public class CipherTest {
         
     }
 
-    @Test
-    public void testGetIV() throws Exception {
+    
+    public static void testGetIV() throws Exception {
         for (String cipher : ciphers) {
             for(String padding : paddings) {
                 runTestGetIV(cipher, padding);
@@ -310,13 +293,13 @@ public class CipherTest {
         
     }
 
-    private void runTestBlockSize(String cipherName, String padding) throws Exception {
+    private static void runTestBlockSize(String cipherName, String padding) throws Exception {
         String fullName = cipherName + "/" + padding;
         Cipher cipher = Cipher.getInstance(fullName, "OpenSSLFIPSProvider");
-        assertEquals("Invalid block size", cipher.getBlockSize(), 16);
+        Utils.assertIntEquals("Invalid block size", cipher.getBlockSize(), 16);
     }
 
-    private void runTestGetIV(String nameKeySizeAndMode, String padding) throws Exception {
+    private static void runTestGetIV(String nameKeySizeAndMode, String padding) throws Exception {
         SecureRandom sr = SecureRandom.getInstance("NativePRNG");
         String cipherName = nameKeySizeAndMode + "/" + padding;
 
@@ -331,7 +314,7 @@ public class CipherTest {
         } else if (keySize.equals("256")) {
             key = new byte[32];
         } else {
-            fail("Key size unsupported");
+            Utils.fail("Key size unsupported");
             return;
         }
 
@@ -344,11 +327,11 @@ public class CipherTest {
 
         cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), spec, sr);
         byte[] retIV = cipher.getIV();
-        assertArrayEquals("Returned IV does not match supplied IV", iv, retIV);
+        Utils.assertArrayEquals("Returned IV does not match supplied IV", iv, retIV);
     }
 
-    @Test
-    public void testKeyWrapUnwrap() throws Exception {
+    
+    public static void testKeyWrapUnwrap() throws Exception {
         for (String cipher : ciphers) {
             // CCM tests currently fail
             // see https://github.com/openssl/openssl/issues/22773
@@ -362,7 +345,7 @@ public class CipherTest {
         
     }
 
-    public void runTestKeyWrapUnwrap(String nameKeySizeAndMode, String padding) throws Exception {
+    public static void runTestKeyWrapUnwrap(String nameKeySizeAndMode, String padding) throws Exception {
 
         SecureRandom sr = SecureRandom.getInstance("NativePRNG");
         String cipherName = nameKeySizeAndMode + "/" + padding;
@@ -377,7 +360,7 @@ public class CipherTest {
         } else if (keySize.equals("256")) {
             key = new byte[32];
         } else {
-            fail("Key size unsupported");
+            Utils.fail("Key size unsupported");
             return;
         }
 
@@ -408,6 +391,6 @@ public class CipherTest {
         // unwrap
         Key sk2 = decipher.unwrap(wrappedKey, "AES", Cipher.SECRET_KEY);
 
-        assertArrayEquals("Invalid secret key " + (nameKeySizeAndMode + "/" +  padding), sk1.getEncoded(), sk2.getEncoded());
+        Utils.assertArrayEquals("Invalid secret key " + (nameKeySizeAndMode + "/" +  padding), sk1.getEncoded(), sk2.getEncoded());
     }
 }

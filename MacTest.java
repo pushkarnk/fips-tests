@@ -25,14 +25,9 @@ import java.security.Security;
 import javax.crypto.Mac;
 import java.security.SecureRandom;
 
-import org.junit.Test;
-import org.junit.BeforeClass;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-
 public class MacTest {
 
-    private byte[] key = new byte[] {
+    private static byte[] key = new byte[] {
         (byte)0x6c, (byte)0xde, (byte)0x14, (byte)0xf5, (byte)0xd5, (byte)0x2a, (byte)0x4a, (byte)0xdf,
         (byte)0x12, (byte)0x39, (byte)0x1e, (byte)0xbf, (byte)0x36, (byte)0xf9, (byte)0x6a, (byte)0x46,
         (byte)0x48, (byte)0xd0, (byte)0xb6, (byte)0x51, (byte)0x89, (byte)0xfc, (byte)0x24, (byte)0x85,
@@ -43,12 +38,12 @@ public class MacTest {
         (byte)0x15, (byte)0xee, (byte)0x82, (byte)0xdb, (byte)0x8d, (byte)0x29, (byte)0x54, (byte)0x14
     };
 
-    private byte[] input = """
+    private static byte[] input = """
        From that time on, the world was hers for the reading.
        She would never be lonely again, never miss the lack of intimate friends.
        Books became her friends and there was one for every mood.""".getBytes();
 
-    private byte[] input1 = """
+    private static byte[] input1 = """
        From that time on, the world was hers for the reading.
        She would never be lonely again, never miss the lack of intimate friends.
        Books became her friends and there was one for every mood""".getBytes();
@@ -58,7 +53,7 @@ public class MacTest {
         D apply(A op1, B op2, C op3);
     }
 
-    private BiFunction<Mac, byte[], byte[]> macCompute1 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute1 = (mac, input) -> {
         try {
             mac.update(ByteBuffer.wrap(input));
             mac.update(ByteBuffer.wrap(input));
@@ -70,7 +65,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute2 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute2 = (mac, input) -> {
         try {
             mac.update(ByteBuffer.wrap(input));
             return mac.doFinal(input);
@@ -79,7 +74,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute3 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute3 = (mac, input) -> {
         try {
             mac.update(ByteBuffer.wrap(input));
             mac.update(ByteBuffer.wrap(input));
@@ -89,7 +84,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute4 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute4 = (mac, input) -> {
         try {
             mac.update(input, 0, 10240);
             mac.update(input, 0, 10240);
@@ -102,7 +97,7 @@ public class MacTest {
     };
 
 
-    private BiFunction<Mac, byte[], byte[]> macCompute5 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute5 = (mac, input) -> {
         try {
             mac.update(input, 0, 10240);
             return mac.doFinal(input);
@@ -111,7 +106,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute6 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute6 = (mac, input) -> {
         try {
             mac.update(input, 0, 10240);
             mac.update(input, 0, 10240);
@@ -121,7 +116,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute7 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute7 = (mac, input) -> {
         try {
             mac.update(input);
             mac.update(input);
@@ -133,7 +128,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute8 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute8 = (mac, input) -> {
         try {
             mac.update(input);
             return mac.doFinal(input);
@@ -142,7 +137,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute9 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute9 = (mac, input) -> {
         try {
             mac.update(input);
             mac.update(input);
@@ -152,7 +147,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute10 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute10 = (mac, input) -> {
         try {
             for (byte b : input) {
                 mac.update(b);
@@ -169,7 +164,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute11 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute11 = (mac, input) -> {
         try {
             for (byte b : input) {
                 mac.update(b);
@@ -183,7 +178,7 @@ public class MacTest {
         }
     };
 
-    private BiFunction<Mac, byte[], byte[]> macCompute12 = (mac, input) -> {
+    private static BiFunction<Mac, byte[], byte[]> macCompute12 = (mac, input) -> {
         try {
             for (byte b : input) {
                 mac.update(b);
@@ -194,7 +189,7 @@ public class MacTest {
         }
     };
 
-    private TriFunction<Mac, SecretKeySpec, byte[], byte[]> macCompute = (mac, keySpec, input) -> {
+    private static TriFunction<Mac, SecretKeySpec, byte[], byte[]> macCompute = (mac, keySpec, input) -> {
         try {
             mac.init(keySpec, null);
             mac.update(input, 0, input.length);
@@ -204,18 +199,18 @@ public class MacTest {
         }
     };
 
-    private void runTest(String name, SecretKeySpec keySpec, String macName) throws Exception {
+    private static void runTest(String name, SecretKeySpec keySpec, String macName) throws Exception {
         Mac mac1 = Mac.getInstance(macName, "OpenSSLFIPSProvider");
         Mac mac2 = Mac.getInstance(macName, "OpenSSLFIPSProvider");
         Mac mac3 = Mac.getInstance(macName, "OpenSSLFIPSProvider");
         byte[] output1 = macCompute.apply(mac1, keySpec, input);
         byte[] output2 = macCompute.apply(mac2, keySpec, input);
         byte[] output3 = macCompute.apply(mac3, keySpec, input1);
-        assertArrayEquals("Test for mac " + name + " failed.", output1, output2);
-        assertFalse("Test for mac " + name  + " failed.", Arrays.equals(output2, output3));
+        Utils.assertArrayEquals("Test for mac " + name + " failed.", output1, output2);
+        Utils.assertFalse("Test for mac " + name  + " failed.", Arrays.equals(output2, output3));
     }
 
-    private void runLargeTest(String name, SecretKeySpec keySpec, String macName) throws Exception {
+    private static void runLargeTest(String name, SecretKeySpec keySpec, String macName) throws Exception {
         SecureRandom hmac = SecureRandom.getInstance("HashSHA512","OpenSSLFIPSProvider");
         byte[] input = new byte[10240];
         hmac.nextBytes(input);
@@ -262,22 +257,21 @@ public class MacTest {
         assertAllElementsOfArrayAreEqual(outputs, name);
     }
 
-    private void assertAllElementsOfArrayAreEqual(byte[][] arrays, String name) {
+    private static void assertAllElementsOfArrayAreEqual(byte[][] arrays, String name) {
         for(int i = 0; i < arrays.length-1; i++) {
-            assertArrayEquals("Test for mac " + name + " failed (" + i + ", " + (i + 1) + ").", arrays[i], arrays[i+1]);
+            Utils.assertArrayEquals("Test for mac " + name + " failed (" + i + ", " + (i + 1) + ").", arrays[i], arrays[i+1]);
         }
     }
 
-    @Test
-    public void testCMAC_AES() throws Exception {
+    public static void testCMAC_AES() throws Exception {
         runTest("CMAC[Cipher: AES-256-CBC]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 32), "AES"),
             "CMACwithAes256CBC");
         
     }
 
-    @Test
-    public void testLargeCMAC_AES() throws Exception {
+
+    public static void testLargeCMAC_AES() throws Exception {
         runLargeTest("CMAC[Cipher: AES-256-CBC]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 32), "AES"),
             "CMACwithAes256CBC");
@@ -285,89 +279,90 @@ public class MacTest {
 
     }
 
-    @Test
-    public void testGMAC_AES() throws Exception {
+
+    public static void testGMAC_AES() throws Exception {
         runTest("GMAC[Cipher: AES-128-GCM]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES"),
             "GMACWithAes128GCM");
         
     }
 
-    @Test
-    public void testLargeGMAC_AES() throws Exception {
+    public static void testLargeGMAC_AES() throws Exception {
         runLargeTest("GMAC[Cipher: AES-128-GCM]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES"),
             "GMACWithAes128GCM");
         
     }
 
-
-    @Test
-    public void testHMAC_SHA1() throws Exception {
+    public static void testHMAC_SHA1() throws Exception {
         runTest("HMAC[Digest: SHA1]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA1");
         
     }
 
-    @Test
-    public void testLargeHMAC_SHA1() throws Exception {
+    public static void testLargeHMAC_SHA1() throws Exception {
         runLargeTest("HMAC[Digest: SHA1]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA1");
         
     }
 
-    @Test
-    public void testHMAC_SHA3_512() throws Exception {
+    public static void testHMAC_SHA3_512() throws Exception {
         runTest("HMAC[Digest: SHA3-512]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA3_512");
         
     }
 
-    @Test
-    public void testLargeHMAC_SHA3_512() throws Exception {
+    public static void testLargeHMAC_SHA3_512() throws Exception {
         runLargeTest("HMAC[Digest: SHA3-512]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA3_512");
         
     }
 
-    @Test
-    public void testKMAC_128() throws Exception {
+    public static void testKMAC_128() throws Exception {
         runTest("KMAC-128",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "KMAC-128"),
             "KMAC128");
         
     }
 
-    @Test
-    public void testLargeKMAC_128() throws Exception {
+    public static void testLargeKMAC_128() throws Exception {
         runLargeTest("KMAC-128",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "KMAC-128"),
             "KMAC128");
         
     }
 
-    @Test
-    public void testKMAC_256() throws Exception {
+    public static void testKMAC_256() throws Exception {
         runTest("KMAC-256",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 32), "KMAC-256"),
             "KMAC256");
         
     }
 
-    @Test
-    public void testLargeKMAC_256() throws Exception {
+    public static void testLargeKMAC_256() throws Exception {
         runLargeTest("KMAC-256",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 32), "KMAC-256"),
             "KMAC256");
     }
 
-    public void run() {
+    public static void main(String[] args) throws Exception {
         System.out.print("MacTest: ");
-        var result = org.junit.runner.JUnitCore.runClasses(MacTest.class);             
-        System.out.println("Run " + result.getRunCount() + " tests, failed " + result.getFailureCount());
+        testCMAC_AES();
+        testLargeCMAC_AES();
+        testGMAC_AES();
+        testLargeGMAC_AES();
+        testHMAC_SHA1();
+        testLargeHMAC_SHA1();
+        testHMAC_SHA3_512();
+        testLargeHMAC_SHA3_512();
+        testKMAC_128();
+        testLargeKMAC_128();
+        testKMAC_256();
+        testLargeKMAC_256();   
+
     }
 }

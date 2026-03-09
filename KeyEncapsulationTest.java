@@ -26,19 +26,13 @@ import javax.crypto.KEM.Decapsulator;
 import javax.crypto.SecretKey;
 import java.security.Security;
 
-import org.junit.Test;
-import org.junit.BeforeClass;
-import static org.junit.Assert.assertTrue;
-
 public class KeyEncapsulationTest {
-    public void run() {
+    public static void main(String[] args) throws Exception {
         System.out.print("KeyEncapsulationTest: ");
-        var result = org.junit.runner.JUnitCore.runClasses(KeyEncapsulationTest.class);             
-        System.out.println("Run " + result.getRunCount() + " tests, failed " + result.getFailureCount());
+        testKEMRSA();
     }
 
-    @Test
-    public void testKEMRSA() throws Exception {
+    public static void testKEMRSA() throws Exception {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(4096);
 
@@ -61,6 +55,6 @@ public class KeyEncapsulationTest {
         byte[] encapsulationBytes = encapsulated.encapsulation();
         SecretKey aliceSecret = decapsulator.decapsulate(encapsulationBytes, 0, encapsulationBytes.length, "AES");
 
-        assertTrue("Key Encapsulation with RSA test failed", aliceSecret.equals(bobSecret));
+        Utils.assertTrue("Key Encapsulation with RSA test failed", aliceSecret.equals(bobSecret));
     }
 }
