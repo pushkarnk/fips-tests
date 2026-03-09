@@ -1,19 +1,3 @@
-/*
- * Copyright (C) Canonical, Ltd.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
 import java.lang.FunctionalInterface;
 import java.util.Arrays;
 import java.util.function.*;
@@ -267,7 +251,7 @@ public class MacTest {
         runTest("CMAC[Cipher: AES-256-CBC]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 32), "AES"),
             "CMACwithAes256CBC");
-        
+
     }
 
 
@@ -275,7 +259,7 @@ public class MacTest {
         runLargeTest("CMAC[Cipher: AES-256-CBC]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 32), "AES"),
             "CMACwithAes256CBC");
-        
+
 
     }
 
@@ -284,63 +268,63 @@ public class MacTest {
         runTest("GMAC[Cipher: AES-128-GCM]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES"),
             "GMACWithAes128GCM");
-        
+
     }
 
     public static void testLargeGMAC_AES() throws Exception {
         runLargeTest("GMAC[Cipher: AES-128-GCM]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES"),
             "GMACWithAes128GCM");
-        
+
     }
 
     public static void testHMAC_SHA1() throws Exception {
         runTest("HMAC[Digest: SHA1]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA1");
-        
+
     }
 
     public static void testLargeHMAC_SHA1() throws Exception {
         runLargeTest("HMAC[Digest: SHA1]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA1");
-        
+
     }
 
     public static void testHMAC_SHA3_512() throws Exception {
         runTest("HMAC[Digest: SHA3-512]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA3_512");
-        
+
     }
 
     public static void testLargeHMAC_SHA3_512() throws Exception {
         runLargeTest("HMAC[Digest: SHA3-512]",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 64), "HMAC"),
             "HMACwithSHA3_512");
-        
+
     }
 
     public static void testKMAC_128() throws Exception {
         runTest("KMAC-128",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "KMAC-128"),
             "KMAC128");
-        
+
     }
 
     public static void testLargeKMAC_128() throws Exception {
         runLargeTest("KMAC-128",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "KMAC-128"),
             "KMAC128");
-        
+
     }
 
     public static void testKMAC_256() throws Exception {
         runTest("KMAC-256",
             new SecretKeySpec(Arrays.copyOfRange(key, 0, 32), "KMAC-256"),
             "KMAC256");
-        
+
     }
 
     public static void testLargeKMAC_256() throws Exception {
@@ -362,7 +346,7 @@ public class MacTest {
         testKMAC_128();
         testLargeKMAC_128();
         testKMAC_256();
-        testLargeKMAC_256();   
-
+        testLargeKMAC_256();
+        System.out.println("DONE");
     }
 }

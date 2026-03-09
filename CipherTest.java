@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.security.spec.AlgorithmParameterSpec;
 import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;            
+import javax.crypto.spec.PBEKeySpec;
 
 public class CipherTest {
 
@@ -49,9 +49,9 @@ public class CipherTest {
         "AES192/GCM",
         "AES256/GCM"
     };
-   
+
     public static void main(String[] args) throws Exception {
-        System.out.println("CipherTest: ");
+        System.err.print("CipherTest: ");
         testBlockSize();
         testGetOutputSize();
         testGetIV();
@@ -59,9 +59,10 @@ public class CipherTest {
         testSingleUpdate();
         testMultipleUpdates();
         testKeyWrapUnwrap();
+        System.err.println("DONE");
     }
 
-    
+
     public static void testSingleUpdate() throws Exception {
         for (String cipher : ciphers) {
             // CCM tests currently fail
@@ -75,7 +76,7 @@ public class CipherTest {
         }
     }
 
-    
+
     public static void testMultipleUpdates() throws Exception {
         for (String cipher : ciphers) {
             // CCM tests currently fail
@@ -86,12 +87,12 @@ public class CipherTest {
                 runTestMultipleUpdates(cipher, padding);
             }
         }
-        
+
     }
 
     private static void runTestMultipleUpdates(String nameKeySizeAndMode, String padding) throws Exception {
         String cipherName = nameKeySizeAndMode + "/" + padding;
-        SecureRandom sr = SecureRandom.getInstance("NativePRNG");
+        SecureRandom sr = SecureRandom.getInstance("AES256CTR", "OpenSSLFIPSProvider");
 
         String aad = "The quick brown fox jumps over the lazy dog";
 
@@ -135,7 +136,7 @@ public class CipherTest {
         byte[] enc1 = cipher.update(input, 0, input.length);
         System.arraycopy(enc1, 0, fullEnc, 0, enc1.length);
         encLen += enc1.length;
- 
+
         byte[] enc2 = cipher.doFinal(input, 0, input.length);
         System.arraycopy(enc2, 0, fullEnc, encLen, enc2.length);
         encLen += enc2.length;
@@ -150,11 +151,11 @@ public class CipherTest {
 
         byte[] output = decipher.doFinal(fullEnc, 0, encLen);
 
-        Utils.assertArrayEquals("Multi-update cipher test for " + cipherName + " failed", fullInput, output); 
+        Utils.assertArrayEquals("Multi-update cipher test for " + cipherName + " failed", fullInput, output);
     }
 
     private static void runTestSingleUpdate(String nameKeySizeAndMode, String padding) throws Exception {
-        SecureRandom sr = SecureRandom.getInstance("NativePRNG");
+        SecureRandom sr = SecureRandom.getInstance("AES256CTR", "OpenSSLFIPSProvider");
         String cipherName = nameKeySizeAndMode + "/" + padding;
         Cipher cipher = Cipher.getInstance(cipherName, "OpenSSLFIPSProvider");
 
@@ -177,7 +178,7 @@ public class CipherTest {
 
         byte[] iv = new byte[16];
         sr.nextBytes(iv);
-        AlgorithmParameterSpec spec = new IvParameterSpec(iv); 
+        AlgorithmParameterSpec spec = new IvParameterSpec(iv);
 
         cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), spec, sr);
 
@@ -206,7 +207,7 @@ public class CipherTest {
 
     private static void runTestGetOutputSize(String nameKeySizeAndMode, String padding) throws Exception {
         String cipherName = nameKeySizeAndMode + "/" + padding;
-        SecureRandom sr = SecureRandom.getInstance("NativePRNG");
+        SecureRandom sr = SecureRandom.getInstance("AES256CTR", "OpenSSLFIPSProvider");
 
         byte[] key;
         String keySize = nameKeySizeAndMode.split("/")[0].substring(3);
@@ -260,17 +261,17 @@ public class CipherTest {
         Utils.assertArrayEquals("Multi-update cipher test for " + cipherName + " failed", fullInput, output);
     }
 
-    
+
     public static void testBlockSize() throws Exception {
         for (String cipher : ciphers) {
             for(String padding : paddings) {
                 runTestBlockSize(cipher, padding);
             }
         }
-        
+
     }
 
-    
+
     public static void testGetOutputSize() throws Exception {
         for (String cipher : ciphers) {
             if (cipher.endsWith("CCM"))
@@ -280,17 +281,17 @@ public class CipherTest {
                 runTestGetOutputSize(cipher, padding);
             }
         }
-        
+
     }
 
-    
+
     public static void testGetIV() throws Exception {
         for (String cipher : ciphers) {
             for(String padding : paddings) {
                 runTestGetIV(cipher, padding);
             }
         }
-        
+
     }
 
     private static void runTestBlockSize(String cipherName, String padding) throws Exception {
@@ -300,7 +301,7 @@ public class CipherTest {
     }
 
     private static void runTestGetIV(String nameKeySizeAndMode, String padding) throws Exception {
-        SecureRandom sr = SecureRandom.getInstance("NativePRNG");
+        SecureRandom sr = SecureRandom.getInstance("AES256CTR", "OpenSSLFIPSProvider");
         String cipherName = nameKeySizeAndMode + "/" + padding;
 
         Cipher cipher = Cipher.getInstance(cipherName, "OpenSSLFIPSProvider");
@@ -330,7 +331,7 @@ public class CipherTest {
         Utils.assertArrayEquals("Returned IV does not match supplied IV", iv, retIV);
     }
 
-    
+
     public static void testKeyWrapUnwrap() throws Exception {
         for (String cipher : ciphers) {
             // CCM tests currently fail
@@ -342,12 +343,12 @@ public class CipherTest {
                 runTestKeyWrapUnwrap(cipher, padding);
             }
         }
-        
+
     }
 
     public static void runTestKeyWrapUnwrap(String nameKeySizeAndMode, String padding) throws Exception {
 
-        SecureRandom sr = SecureRandom.getInstance("NativePRNG");
+        SecureRandom sr = SecureRandom.getInstance("AES256CTR","OpenSSLFIPSProvider");
         String cipherName = nameKeySizeAndMode + "/" + padding;
 
         // create key

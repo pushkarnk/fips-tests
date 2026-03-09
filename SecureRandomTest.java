@@ -21,11 +21,11 @@ public class SecureRandomTest {
         Utils.assertIntEquals("Invalid seed length [CTR]", ctr.generateSeed(8).length, 8);
         Utils.assertIntEquals("Invalid seed length [HMAC]", hmac.generateSeed(8).length, 8);
         Utils.assertIntEquals("Invalid seed length [HASH]", hash.generateSeed(8).length, 8);
-        
+
     }
 
     public static void testDRBGCreationWithParams() throws NoSuchAlgorithmException, NoSuchProviderException {
-        SecureRandomParameters params = DrbgParameters.instantiation(144, Capability.PR_AND_RESEED, "FIPSPROTOTYPE".getBytes()); 
+        SecureRandomParameters params = DrbgParameters.instantiation(144, Capability.PR_AND_RESEED, "FIPSPROTOTYPE".getBytes());
         SecureRandom ctr = SecureRandom.getInstance("AES256CTR", params, "OpenSSLFIPSProvider");
         SecureRandom hmac = SecureRandom.getInstance("HashSHA512", params, "OpenSSLFIPSProvider");
         SecureRandom hash = SecureRandom.getInstance("HMACSHA256", params, "OpenSSLFIPSProvider");
@@ -33,7 +33,7 @@ public class SecureRandomTest {
         Utils.assertIntEquals("Invalid seed length [CTR]", ctr.generateSeed(8).length, 8);
         Utils.assertIntEquals("Invalid seed length [HMAC]", hmac.generateSeed(8).length, 8);
         Utils.assertIntEquals("Invalid seed length [HASH]", hash.generateSeed(8).length, 8);
-        
+
     }
 
     public static void testDRBGCreationGenerateSeed() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -44,7 +44,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr.generateSeed(8), ctr.generateSeed(8));
         testArrayInequality(hmac.generateSeed(16), hmac.generateSeed(16));
         testArrayInequality(hash.generateSeed(32), hash.generateSeed(32));
-        
+
     }
 
     public static void testDRBGCreationWithParamsGenerateSeed() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -56,7 +56,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr.generateSeed(8), ctr.generateSeed(8));
         testArrayInequality(hmac.generateSeed(16), hmac.generateSeed(16));
         testArrayInequality(hash.generateSeed(32), hash.generateSeed(32));
-        
+
     }
 
     public static void testDRBGCreationNextBytes() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -78,11 +78,11 @@ public class SecureRandomTest {
         byte [] hash2 = new byte[64];
         hash.nextBytes(hash1);
         hash.nextBytes(hash2);
- 
+
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void testDRBGCreationWithParamsNextBytes() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -107,11 +107,11 @@ public class SecureRandomTest {
         byte [] hash2 = new byte[84];
         hash.nextBytes(hash1);
         hash.nextBytes(hash2);
-    
+
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void testDRBGCreationNextBytesWithParams() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -140,7 +140,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void testDRBGCreationWithParamsNextBytesWithParams() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -169,7 +169,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void testDRBGCreationReseed() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -198,7 +198,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void testDRBGCreationWithParamsReseed() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -229,7 +229,7 @@ public class SecureRandomTest {
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
 
-        
+
     }
 
     public static void testDRBGCreationReseedWithParams() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -260,7 +260,7 @@ public class SecureRandomTest {
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
 
-        
+
     }
 
     public static void testDRBGCreationWithParamsReseedWithParams() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -292,7 +292,7 @@ public class SecureRandomTest {
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
 
-        
+
     }
 
     public static void testDRBGCreationSetSeedBytes() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -322,7 +322,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void testDRBGCreationWithParamsSetSeedBytes() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -352,8 +352,8 @@ public class SecureRandomTest {
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
-    } 
+
+    }
 
     public static void testDRBGCreationSetSeedLong() throws NoSuchAlgorithmException, NoSuchProviderException {
         SecureRandom ctr = SecureRandom.getInstance("AES256CTR", "OpenSSLFIPSProvider");
@@ -381,7 +381,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void testDRBGCreationWithParamsSetSeedLong() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -411,7 +411,7 @@ public class SecureRandomTest {
         testArrayInequality(ctr1, ctr2);
         testArrayInequality(hmac1, hmac2);
         testArrayInequality(hash1, hash2);
-        
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -432,5 +432,6 @@ public class SecureRandomTest {
         testDRBGCreationWithParamsSetSeedBytes();
         testDRBGCreationSetSeedLong();
         testDRBGCreationWithParamsSetSeedLong();
+        System.out.println("DONE");
     }
 }

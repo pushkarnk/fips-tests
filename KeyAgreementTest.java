@@ -14,6 +14,7 @@ public class KeyAgreementTest {
         System.out.print("KeyAgreementTest: ");
         testDH();
         testECDH();
+        System.out.println("DONE");
     }
 
     private static void runTest(KeyPairGenerator kpg, String algo) throws Exception {

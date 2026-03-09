@@ -20,11 +20,6 @@ import java.security.Security;
 import java.security.Signature;
 import com.canonical.openssl.provider.OpenSSLFIPSProvider;
 
-import org.junit.Test;
-import org.junit.BeforeClass;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
 public class SignatureTest {
 
     static String message = "Apollo is one of the Olympian deities in classical "
@@ -38,8 +33,7 @@ public class SignatureTest {
          + "beardless, athletic youth). Apollo is known in Greek-influenced "
          + "Etruscan mythology as Apulu.";
 
-    @Test
-    public void testRSABasic() throws Exception {
+    public static void testRSABasic() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
@@ -55,11 +49,10 @@ public class SignatureTest {
         verifier.initVerify(publicKey);
         verifier.update(bytes, 0, bytes.length);
 
-        assertTrue("SignatureTest for RSA failed.", verifier.verify(sigBytes));
+        Utils.assertTrue("SignatureTest for RSA failed.", verifier.verify(sigBytes));
     }
 
-    @Test
-    public void testRSAwithMultipleUpdates() throws Exception {
+    public static void testRSAwithMultipleUpdates() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         gen.initialize(4096);
         KeyPair kp = gen.generateKeyPair();
@@ -71,7 +64,7 @@ public class SignatureTest {
         byte[] bytes = message.getBytes();
         signer.update(bytes, 0, bytes.length);
         signer.update(bytes, 2, bytes.length-2);
-        signer.update(bytes, 3, bytes.length-3); 
+        signer.update(bytes, 3, bytes.length-3);
         byte[] sigBytes = signer.sign();
 
         Signature verifier = Signature.getInstance("RSAwithSHA256", "OpenSSLFIPSProvider");
@@ -80,11 +73,10 @@ public class SignatureTest {
         verifier.update(bytes, 2, bytes.length-2);
         verifier.update(bytes, 3, bytes.length-3);
 
-        assertTrue("SignatureTest with multiple updates for RSA failed.", verifier.verify(sigBytes));
+        Utils.assertTrue("SignatureTest with multiple updates for RSA failed.", verifier.verify(sigBytes));
     }
 
-    @Test
-    public void testRSAsingleByteUpdates() throws Exception {
+    public static void testRSAsingleByteUpdates() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
@@ -103,11 +95,10 @@ public class SignatureTest {
         verifier.initVerify(publicKey);
         verifier.update(bytes, 0, bytes.length);
 
-        assertTrue("RSA SignatureTest with byte updates failed.", verifier.verify(sigBytes));
+        Utils.assertTrue("RSA SignatureTest with byte updates failed.", verifier.verify(sigBytes));
     }
 
-    @Test
-    public void testRSAmultipleByteBufferUpdates() throws Exception {
+    public static void testRSAmultipleByteBufferUpdates() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         gen.initialize(8192);
         KeyPair kp = gen.generateKeyPair();
@@ -124,11 +115,10 @@ public class SignatureTest {
         verifier.initVerify(publicKey);
         verifier.update(bytes, 0, bytes.length);
 
-        assertTrue("RSA SignatureTest with ByteBuffer updates failed.", verifier.verify(sigBytes));
+        Utils.assertTrue("RSA SignatureTest with ByteBuffer updates failed.", verifier.verify(sigBytes));
     }
 
-    @Test
-    public void testRSAsignNonzeroOffset() throws Exception {
+    public static void testRSAsignNonzeroOffset() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         gen.initialize(4096);
         KeyPair kp = gen.generateKeyPair();
@@ -146,11 +136,10 @@ public class SignatureTest {
         verifier.initVerify(publicKey);
         verifier.update(bytes, 0, bytes.length);
 
-        assertTrue("RSA SignatureTest with non-zero offset failed.", verifier.verify(sigBytes, 100, 512));
+        Utils.assertTrue("RSA SignatureTest with non-zero offset failed.", verifier.verify(sigBytes, 100, 512));
     }
 
-    @Test
-    public void testRSAtamperedSignature() throws Exception {
+    public static void testRSAtamperedSignature() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
@@ -172,11 +161,10 @@ public class SignatureTest {
         // tamper signature
         sigBytes[0] += 1;
 
-        assertFalse("RSA SignatureTest with tampered signature failed.", verifier.verify(sigBytes));
+        Utils.assertFalse("RSA SignatureTest with tampered signature failed.", verifier.verify(sigBytes));
     }
 
-    @Test
-    public void testRSAtamperedContent() throws Exception {
+    public static void testRSAtamperedContent() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
@@ -198,12 +186,19 @@ public class SignatureTest {
         verifier.initVerify(publicKey);
         verifier.update(bytes, 0, bytes.length);
 
-        assertFalse("RSA SignatureTest with tampered content failed.", verifier.verify(sigBytes));
+        Utils.assertFalse("RSA SignatureTest with tampered content failed.", verifier.verify(sigBytes));
     }
 
-    @BeforeClass
-    public static void addProvider() throws Exception {
-        Security.addProvider(new OpenSSLFIPSProvider());
+    public static void main(String[] args) throws Exception {
+        System.out.print("SignatureTest: ");
+        testRSABasic();
+        testRSAwithMultipleUpdates();
+        testRSAsingleByteUpdates();
+        testRSAmultipleByteBufferUpdates();
+        testRSAsignNonzeroOffset();
+        testRSAtamperedSignature();
+        testRSAtamperedContent();
+        System.out.println("DONE");
     }
 }
 
@@ -229,7 +224,7 @@ class RSAPublicKey extends TestKey implements OpenSSLPublicKey {
     }
 
     public long getNativeKeyHandle() {
-        return nativeKey; 
+        return nativeKey;
     }
 }
 

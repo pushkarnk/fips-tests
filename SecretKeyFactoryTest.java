@@ -8,13 +8,13 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 public class SecretKeyFactoryTest {
-    
+
     public static void testPBKDF2() throws Exception {
         String password = "Zaq12wsXCde34rfV";
         String salt = "NaClCommonSaltRockSaltSeaSalt";
         int iterationCount = 120000;
 
-        char[] passwordChars = new char[16]; 
+        char[] passwordChars = new char[16];
         password.getChars(0, 16, passwordChars, 0);
         PBEKeySpec keySpec = new PBEKeySpec(passwordChars, salt.getBytes(), iterationCount);
 
@@ -34,5 +34,6 @@ public class SecretKeyFactoryTest {
     public static void main(String[] args) throws Exception {
         System.out.print("SecretKeyFactoryTest: ");
         testPBKDF2();
+        System.out.println("DONE");
     }
 }

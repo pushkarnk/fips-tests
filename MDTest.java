@@ -25,7 +25,7 @@ public class MDTest {
     };
 
     public static void messageDigestTest() throws Exception {
-        for (String name : List.of("MDSHA1", "MDSHA224", "MDSHA3_384", "MDSHA3_512")) { 
+        for (String name : List.of("MDSHA1", "MDSHA224", "MDSHA3_384", "MDSHA3_512")) {
             MessageDigest md1 = MessageDigest.getInstance(name, "OpenSSLFIPSProvider");
             MessageDigest md2 = MessageDigest.getInstance(name, "OpenSSLFIPSProvider");
             MessageDigest md3 = MessageDigest.getInstance(name, "OpenSSLFIPSProvider");
@@ -98,5 +98,6 @@ public class MDTest {
         System.out.print("MDTest: ");
         messageDigestTest();
         messageDigestElaborateTest();
+        System.out.println("DONE");
     }
 }
