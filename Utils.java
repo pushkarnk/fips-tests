@@ -37,6 +37,12 @@ public class Utils {
         }
     }
 
+    public static void assertEquals(String message, Object expected, Object actual) {
+        if (!expected.equals(actual)) {
+            throw new AssertionError(message);
+        }
+    }
+
     public static void fail(String message) {
         throw new AssertionError(message);
     }
