@@ -43,6 +43,12 @@ public class Utils {
         }
     }
 
+    public static void assertNotNull(String message, Object object) {
+        if (object == null) {
+            throw new AssertionError(message);
+        }
+    }
+
     public static void fail(String message) {
         throw new AssertionError(message);
     }
