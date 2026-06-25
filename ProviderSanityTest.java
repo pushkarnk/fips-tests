@@ -203,7 +203,6 @@ public class ProviderSanityTest {
     }
 
     public static void main(String[] args) throws Exception {
-        Security.addProvider(new OpenSSLFIPSProvider());
         System.out.print("ProviderSanityTest: ");
         testDRBG();
         testKeyAgreement();

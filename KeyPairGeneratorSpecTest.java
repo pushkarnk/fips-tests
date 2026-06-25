@@ -133,7 +133,6 @@ public class KeyPairGeneratorSpecTest {
     }
 
     public static void main(String[] args) throws Exception {
-        Security.addProvider(new OpenSSLFIPSProvider());
         System.out.print("KeyPairGeneratorSpecTest: ");
         ecAcceptsCanonicalOpenSSLName_P256();
         ecAcceptsSecName_P256();

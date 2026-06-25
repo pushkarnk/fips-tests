@@ -110,7 +110,6 @@ public class KeyConverterTest {
     }
 
     public static void main(String[] args) throws Exception {
-        Security.addProvider(new OpenSSLFIPSProvider());
         System.out.print("KeyConverterTest: ");
         testRSAPrivateKeyConversion();
         testEd25519KeyConversion();

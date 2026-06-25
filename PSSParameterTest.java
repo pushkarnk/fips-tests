@@ -68,7 +68,6 @@ public class PSSParameterTest {
     }
 
     public static void main(String[] args) throws Exception {
-        Security.addProvider(new OpenSSLFIPSProvider());
         System.out.print("PSSParameterTest: ");
         testExplicitPSSParametersRoundTrip();
         testMGF1DigestDefaultsToMessageDigest();
