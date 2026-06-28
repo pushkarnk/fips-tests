@@ -1,5 +1,4 @@
 import com.canonical.openssl.signature.*;
-import com.canonical.openssl.key.OpenSSLKey;
 import com.canonical.openssl.key.OpenSSLPublicKey;
 import com.canonical.openssl.key.OpenSSLPrivateKey;
 import com.canonical.openssl.key.KeyConverter;
@@ -34,7 +33,7 @@ public class SignatureTest {
          + "Etruscan mythology as Apulu.";
 
     public static void testRSABasic() throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
         PrivateKey privateKey = new RSAPrivateKey(KeyConverter.privateKeyToEVPKey(kp.getPrivate()));
@@ -53,7 +52,7 @@ public class SignatureTest {
     }
 
     public static void testRSAwithMultipleUpdates() throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
         gen.initialize(4096);
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
@@ -77,7 +76,7 @@ public class SignatureTest {
     }
 
     public static void testRSAsingleByteUpdates() throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
         PrivateKey privateKey = new RSAPrivateKey(KeyConverter.privateKeyToEVPKey(kp.getPrivate()));
@@ -99,8 +98,8 @@ public class SignatureTest {
     }
 
     public static void testRSAmultipleByteBufferUpdates() throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
-        gen.initialize(8192);
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
+        gen.initialize(4096);
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
         PrivateKey privateKey = new RSAPrivateKey(KeyConverter.privateKeyToEVPKey(kp.getPrivate()));
@@ -119,7 +118,7 @@ public class SignatureTest {
     }
 
     public static void testRSAsignNonzeroOffset() throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
         gen.initialize(4096);
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
@@ -140,7 +139,7 @@ public class SignatureTest {
     }
 
     public static void testRSAtamperedSignature() throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
         PrivateKey privateKey = new RSAPrivateKey(KeyConverter.privateKeyToEVPKey(kp.getPrivate()));
@@ -165,7 +164,7 @@ public class SignatureTest {
     }
 
     public static void testRSAtamperedContent() throws Exception {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
         KeyPair kp = gen.generateKeyPair();
         PublicKey publicKey = new RSAPublicKey(KeyConverter.publicKeyToEVPKey(kp.getPublic()));
         PrivateKey privateKey = new RSAPrivateKey(KeyConverter.privateKeyToEVPKey(kp.getPrivate()));

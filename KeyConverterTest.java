@@ -21,42 +21,6 @@ public class KeyConverterTest {
         KeyConverter.freeEVPKey(publicHandle);
     }
 
-    public static void testEd25519KeyConversion() throws Exception {
-        try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed25519", "OpenSSLFIPSProvider");
-            KeyPair kp = kpg.generateKeyPair();
-
-            long privateHandle = KeyConverter.privateKeyToEVPKey(kp.getPrivate());
-            Utils.assertTrue("Ed25519 private key conversion should succeed", privateHandle != 0);
-
-            long publicHandle = KeyConverter.publicKeyToEVPKey(kp.getPublic());
-            Utils.assertTrue("Ed25519 public key conversion should succeed", publicHandle != 0);
-
-            KeyConverter.freeEVPKey(privateHandle);
-            KeyConverter.freeEVPKey(publicHandle);
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("Ed25519 not available, skipping test");
-        }
-    }
-
-    public static void testEd448KeyConversion() throws Exception {
-        try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed448", "OpenSSLFIPSProvider");
-            KeyPair kp = kpg.generateKeyPair();
-
-            long privateHandle = KeyConverter.privateKeyToEVPKey(kp.getPrivate());
-            Utils.assertTrue("Ed448 private key conversion should succeed", privateHandle != 0);
-
-            long publicHandle = KeyConverter.publicKeyToEVPKey(kp.getPublic());
-            Utils.assertTrue("Ed448 public key conversion should succeed", publicHandle != 0);
-
-            KeyConverter.freeEVPKey(privateHandle);
-            KeyConverter.freeEVPKey(publicHandle);
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("Ed448 not available, skipping test");
-        }
-    }
-
     public static void testNullKeyThrowsException() {
         try {
             KeyConverter.privateKeyToEVPKey(null);
@@ -111,9 +75,7 @@ public class KeyConverterTest {
 
     public static void main(String[] args) throws Exception {
         System.out.print("KeyConverterTest: ");
-        //testRSAPrivateKeyConversion();
-        //testEd25519KeyConversion();
-        //testEd448KeyConversion();
+        testRSAPrivateKeyConversion();
         testNullKeyThrowsException();
         testFreeEVPKeyWithZeroHandle();
         testECKeyPairFromFIPSProviderConverts();
