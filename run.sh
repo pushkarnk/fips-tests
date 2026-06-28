@@ -16,5 +16,6 @@ $JAVA_FIPS_JRE/bin/java SecureRandomTest
 $JAVA_FIPS_JRE/bin/java SignatureTest
 $JAVA_FIPS_JRE/bin/java KeyConverterTest
 $JAVA_FIPS_JRE/bin/java KeyPairGeneratorSpecTest
+$JAVA_FIPS_JRE/bin/java RSAKeyPairGeneratorTest
 $JAVA_FIPS_JRE/bin/java PSSParameterTest
 $JAVA_FIPS_JRE/bin/java ProviderSanityTest
