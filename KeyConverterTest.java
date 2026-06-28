@@ -21,7 +21,7 @@ public class KeyConverterTest {
         KeyConverter.freeEVPKey(publicHandle);
     }
 
-    public static void testEd25519KeyConversion() {
+    public static void testEd25519KeyConversion() throws Exception {
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed25519", "OpenSSLFIPSProvider");
             KeyPair kp = kpg.generateKeyPair();
@@ -39,7 +39,7 @@ public class KeyConverterTest {
         }
     }
 
-    public static void testEd448KeyConversion() {
+    public static void testEd448KeyConversion() throws Exception {
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed448", "OpenSSLFIPSProvider");
             KeyPair kp = kpg.generateKeyPair();
