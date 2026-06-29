@@ -19,7 +19,7 @@ public class RSAKeyPairGeneratorTest {
     // Parse the generated X.509 public key with the JDK to read back the actual
     // modulus size and public exponent the FIPS module produced.
     private static RSAPublicKey parsePublic(KeyPair kp) throws Exception {
-        KeyFactory kf = KeyFactory.getInstance("RSA", "OpenSSLFIPSProvider");
+        KeyFactory kf = KeyFactory.getInstance("RSA");
         return (RSAPublicKey) kf.generatePublic(
             new X509EncodedKeySpec(kp.getPublic().getEncoded()));
     }
