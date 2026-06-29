@@ -13,7 +13,7 @@ import com.canonical.openssl.key.KeyConverter;
 public class RSAKeyPairGeneratorTest {
 
     private static KeyPairGenerator rsa() throws Exception {
-        return KeyPairGenerator.getInstance("RSA");
+        return KeyPairGenerator.getInstance("RSA", "OpenSSLFIPSProvider");
     }
 
     // Parse the generated X.509 public key with the JDK to read back the actual
